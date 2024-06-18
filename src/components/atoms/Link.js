@@ -1,12 +1,20 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import {Box} from '@mui/material';
 
-export const Link = ({ children, to, style = {} }) => {
+export const Link = ({ children, to, sx = {} }) => {
     return (
-        <RouterLink to={to} style={{ textDecoration: "none", color: "black", ...style }}>
+        <Box component={RouterLink} to={to} sx={{
+            textDecoration: "none",
+            color: "black",
+            ...sx,
+        }}>
             {children}
-        </RouterLink>
+        </Box>
     );
 };
+
+
+
 
 

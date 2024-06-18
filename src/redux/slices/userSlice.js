@@ -6,7 +6,7 @@ export const authenticateUser = createAsyncThunk(
     "user/authenticateUser",
     async ({ formValues, isLogin }, { rejectWithValue }) => {
         try {
-            const endpoint = isLogin ? "/login" : "/register"; // Fix: Added '/' before 'register'
+            const endpoint = `/users/${isLogin ? "/login" : "/register"}`;
             const { data } = await axiosInstance.post(endpoint, formValues);
             return data;
         } catch (error) {
@@ -32,12 +32,14 @@ const userSlice = createSlice({
         })
         builder.addCase(authenticateUser.fulfilled, (state, action) => {
             state.loading = false;
+            state.error = null;
+            state.userData = action.payload;
         })
         builder.addCase(authenticateUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
         })
-    }
+    },
 });
 
 const { reducer: userReducer } = userSlice;

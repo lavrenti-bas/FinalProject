@@ -2,70 +2,62 @@ import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { LoginValidationSchema } from "./LoginFormValidation";
-import { FormPageContainer, Input, Button } from "../../../components/atoms";
-import styled from "styled-components";
-// import { useDispatch } from "react-redux";
-
-const StyledFormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 100%;
-`;
+import { Input, Button } from "../../../components/atoms";
+import { StyledFormContainer } from "../../../components/atoms/formContainer/FormAndSignupStyles";
+import { useDispatch } from "react-redux";
+import { authenticateUser } from "../../../redux/slices";
 
 export const LoginForm = () => {
     const {
         control,
-        formState: { isValid, errors },
+        formState: { errors },
         handleSubmit,
     } = useForm({
         mode: "onChange",
         resolver: yupResolver(LoginValidationSchema),
     });
+
+    const dispatch = useDispatch();
+
     const onLogin = (data) => {
-        console.log(data)
+        dispatch(authenticateUser({ formValues: data, isLogin: true }))
+        console.log("Data", data);
     };
 
     return (
-        <FormPageContainer>
-            <StyledFormContainer>
-                <Controller
-                    name="email"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => {
-                        const { name, onChange } = field;
-                        return (
-                            <Input
-                                name={name}
-                                onChange={onChange}
-                                label="Email"
-                                error={Boolean(errors.email)}
-                                helperText={errors.email?.message}
-                            />
-                        );
-                    }}
-                />
-                <Controller
-                    type="password"
-                    name="password"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => {
-                        const { name, onChange } = field;
-                        return (
-                            <Input
-                                name={name}
-                                onChange={onChange}
-                                label="password"
-                                error={Boolean(errors.password)}
-                                helperText={errors.password?.message}
-                            />
-                        );
-                    }}
-                />
-                <Button disabled={!isValid} onClick={handleSubmit(onLogin)}>Login</Button>
-            </StyledFormContainer>
-        </FormPageContainer >
+        <StyledFormContainer>
+            <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                    <Input
+                        {...field}
+                        label="Email"
+                        error={Boolean(errors.email)}
+                        helperText={errors.email?.message}
+                    />
+                )}
+            />
+            <Controller
+                name="password"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                    <Input
+                        {...field}
+                        type="password"
+                        label="Password"
+                        error={Boolean(errors.password)}
+                        helperText={errors.password?.message}
+                    />
+                )}
+            />
+            <Button onClick={handleSubmit(onLogin)}
+                sx={{ mt: 3 }}
+            >
+                Log in
+            </Button>
+        </StyledFormContainer>
     );
 };
