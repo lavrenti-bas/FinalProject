@@ -1,12 +1,12 @@
 import React from "react";
 import { Text } from "../../../components/atoms";
-import { FormPageContainer } from "../../../components/atoms/formContainer/FormContainer";
+import { FormContainer } from "../../../components/atoms/FormContainer";
 import { Stack } from "@mui/material";
 import { SignupForm } from "./SignupForm";
 
 export const Signup = () => {
     return (
-        <FormPageContainer>
+        <FormContainer>
             <Stack>
                 <Text
                     variant="h5"
@@ -14,7 +14,7 @@ export const Signup = () => {
                 >Sign up</Text>
                 <SignupForm />
             </Stack>
-        </FormPageContainer>
+        </FormContainer>
     );
 };
 

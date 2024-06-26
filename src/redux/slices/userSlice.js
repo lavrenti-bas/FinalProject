@@ -8,6 +8,8 @@ export const authenticateUser = createAsyncThunk(
         try {
             const endpoint = `/users/${isLogin ? "/login" : "/register"}`;
             const { data } = await axiosInstance.post(endpoint, formValues);
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("refreshToken", data.refreshToken);
             return data;
         } catch (error) {
             return rejectWithValue(error?.response?.data?.message);
@@ -24,7 +26,11 @@ const userSlice = createSlice({
         error: null,
     },
     reducers: {
-        // Define your reducers here
+        logout: (state) => {
+            state.userData = null;
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshtoken");
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(authenticateUser.pending, (state) => {
@@ -42,6 +48,10 @@ const userSlice = createSlice({
     },
 });
 
-const { reducer: userReducer } = userSlice;
+export const { reducer: userReducer } = userSlice;
+export const { logout } = userSlice.actions;
 
-export default userReducer;
+// export default userReducer;
+
+
+

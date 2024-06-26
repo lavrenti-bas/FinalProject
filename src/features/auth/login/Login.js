@@ -1,5 +1,5 @@
 import React from "react";
-import { FormPageContainer } from "../../../components/atoms/formContainer/FormContainer";
+import { FormContainer } from "../../../components/atoms/FormContainer";
 import { Text } from "../../../components/atoms";
 import { LoginForm } from "./LoginForm";
 import { Stack } from "@mui/material";
@@ -7,7 +7,7 @@ import { Stack } from "@mui/material";
 
 export const Login = () => {
     return (
-        <FormPageContainer>
+        <FormContainer>
             <Stack>
                 <Text
                     variant="h5"
@@ -15,7 +15,7 @@ export const Login = () => {
                 >Log in</Text>
                 <LoginForm />
             </Stack>
-        </FormPageContainer>
+        </FormContainer >
     );
 };
 

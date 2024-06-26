@@ -1,11 +1,12 @@
 import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { signupValidationSchema } from "./SignupFormValidation";
 import { Input, Button } from "../../../components/atoms";
-import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../../redux/slices";
-import { StyledFormContainer } from "../../../components/atoms/formContainer/FormAndSignupStyles";
+import { StyledFormContainer } from "../../../components/atoms/FormAndSignupStyles";
 
 export const SignupForm = () => {
     const {
@@ -15,10 +16,21 @@ export const SignupForm = () => {
     } = useForm({
         mode: "onChange",
         resolver: yupResolver(signupValidationSchema),
+
     });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const onSignup = (data) => {
-        dispatch(authenticateUser({ formValues: data }));
+        dispatch(authenticateUser({ formValues: data }))
+            .unwrap()
+            .then(() => {
+                navigate("/");
+            })
+            .catch(() => {
+                console.log("rejected")
+            })
+
         console.log("Data", data);
     };
 
@@ -79,7 +91,7 @@ export const SignupForm = () => {
             />
             <Button
                 onClick={handleSubmit(onSignup)}
-                sx={{ mt: 3 }} 
+                sx={{ mt: 3 }}
             >
                 Sign up
             </Button>

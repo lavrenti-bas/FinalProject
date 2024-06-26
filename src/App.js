@@ -1,15 +1,20 @@
-import './App.css';
-import React from 'react';
-import RoutesComponent from "./routes/RoutesComponent"
+import React, { useEffect } from "react";
+import RoutesComponent from "./routes/RoutesComponent";
+import { useDispatch } from "react-redux";
+import { fetchHomePageProducts } from "./redux/slices";
 
+const App = () => {
+  const dispatch = useDispatch();
 
-function App() {
+  useEffect(() => {
+    dispatch(fetchHomePageProducts());
+  }, [dispatch]);
+
   return (
-    <div className="App">
+    <div>
       <RoutesComponent />
     </div>
   );
-}
+};
 
 export default App;
-
