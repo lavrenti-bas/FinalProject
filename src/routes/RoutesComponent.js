@@ -1,6 +1,6 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
-import { HomePage, LoginPage, SignupPage } from "../pages";
+import { CategoryProductsPage, HomePage, LoginPage, SignupPage, SingleProductPage } from "../pages";
 import { Layout } from "../components/header/Layout";
 import { ProductFormPage } from "../pages";
 import ProtectedRoute from "./ProtectedRoute";
@@ -21,6 +21,22 @@ const Routes = () => {
                         {
                             path: "/",
                             element: <HomePage />,
+                        },
+                        {
+                            path: "/products/categories/:categoryName",
+                            element: <CategoryProductsPage />,
+                        },
+                        {
+                            path: "/products/categories/:categoryName/:id",
+                            element: <SingleProductPage />,
+                        },
+                        {
+                            path: "/products/:id/edit",
+                            element:(
+                                <ProtectedRoute hasAccess={isUserAdmin(userData)}>
+                                    <ProductFormPage />
+                                </ProtectedRoute>
+                            )
                         },
                         {
                             path: "/products/add",

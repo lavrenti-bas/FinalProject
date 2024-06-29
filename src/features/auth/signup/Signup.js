@@ -1,10 +1,16 @@
 import React from "react";
-import { Text } from "../../../components/atoms";
+import { Snackbar, Text } from "../../../components/atoms";
 import { FormContainer } from "../../../components/atoms/FormContainer";
 import { Stack } from "@mui/material";
 import { SignupForm } from "./SignupForm";
+import { clearError } from "../../../redux/slices";
+import { useDispatch } from "react-redux";
+import { useUser } from "../../../hooks";
 
 export const Signup = () => {
+    const { error } = useUser();
+    const dispatch = useDispatch();
+
     return (
         <FormContainer>
             <Stack>
@@ -14,6 +20,10 @@ export const Signup = () => {
                 >Sign up</Text>
                 <SignupForm />
             </Stack>
+            <Snackbar
+                message={error} severity="error"
+                onClose={() => { dispatch(clearError()) }}
+            />
         </FormContainer>
     );
 };

@@ -31,7 +31,7 @@ export const ProductCardActions = ({ product }) => {
             <Stack>
                 <Button onClick={() => {
                     dispatch(setSelectProduct(product));
-                    navigate("/products/add")
+                    navigate(`/products/${product._id}/edit`)
                 }}>
                     edit
                 </Button>

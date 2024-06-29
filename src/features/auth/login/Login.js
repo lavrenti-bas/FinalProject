@@ -1,11 +1,17 @@
 import React from "react";
 import { FormContainer } from "../../../components/atoms/FormContainer";
-import { Text } from "../../../components/atoms";
+import { Snackbar, Text } from "../../../components/atoms";
 import { LoginForm } from "./LoginForm";
 import { Stack } from "@mui/material";
+import { useUser } from "../../../hooks";
+import { useDispatch } from "react-redux";
+import { clearError } from "../../../redux/slices";
 
 
 export const Login = () => {
+    const { error } = useUser()
+    const dispatch = useDispatch();
+
     return (
         <FormContainer>
             <Stack>
@@ -15,6 +21,11 @@ export const Login = () => {
                 >Log in</Text>
                 <LoginForm />
             </Stack>
+            <Snackbar message={error} onClose={() => {
+                dispatch(clearError())
+            }}
+                severity="error"
+            />
         </FormContainer >
     );
 };

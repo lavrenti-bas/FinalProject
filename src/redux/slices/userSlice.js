@@ -30,7 +30,10 @@ const userSlice = createSlice({
             state.userData = null;
             localStorage.removeItem("token");
             localStorage.removeItem("refreshtoken");
-        }
+        },
+        clearError: (state) => {
+            state.error = null;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(authenticateUser.pending, (state) => {
@@ -49,7 +52,7 @@ const userSlice = createSlice({
 });
 
 export const { reducer: userReducer } = userSlice;
-export const { logout } = userSlice.actions;
+export const { logout, clearError } = userSlice.actions;
 
 // export default userReducer;
 

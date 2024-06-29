@@ -4,5 +4,5 @@ export { Link } from "./Link";
 export { Text } from "./Text";
 export { FormContainer } from "./FormContainer";
 export { Loading, LoadingWrapper } from "./Loading";
-
+export { Snackbar } from "./Snackbar";
 

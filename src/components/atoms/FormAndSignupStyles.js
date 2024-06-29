@@ -23,18 +23,6 @@ export const StyledFormContainer = styled.div`
   width: 100%;
 `;
 
-// export const StyledButton = styled(Button)`
-//   margin-top: 24px;
-//   width: 100%;
-//   padding: 20px; /* Increase padding for a larger button */
-//   background-color: #1976d2; /* Use primary color */
-//   color: #fff;
-
-//   &:hover {
-//     background-color: #1565c0; /* Darken the button on hover */
-//   }
-// `;
-
 export const HomeLinkContainer = styled.div`
   position: absolute;
   top: 20px;
