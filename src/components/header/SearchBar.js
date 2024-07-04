@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, InputAdornment, Stack, TextField, styled } from "@mui/material";
-import { Link, Loading, Text } from "../atoms";
+import { Autocomplete, InputAdornment, Stack, TextField, styled, Divider } from "@mui/material";
+import { Link, Text } from "../atoms";
 import { BsSearch } from "react-icons/bs";
 import { useDebounce, useFetchData } from "../../hooks";
 
-const StyleAutoComplete = styled(Autocomplete)(({ width }) => ({
+const StyledAutoComplete = styled(Autocomplete)(({ width }) => ({
     width: width || "300px",
-    ".MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {},
+    ".MuiOutlinedInput-root": {
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "black",
+        },
+        "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "black",
+        },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "white",
+        },
+    },
     borderRadius: 4,
-    borderColor: "#ec5e2a",
-    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#ec5e2a",
+    ".MuiAutocomplete-option": {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     },
 }));
 
@@ -24,7 +35,7 @@ const StyledImage = styled("img")({
 export const SearchBar = ({ width }) => {
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearch] = useDebounce(searchValue, 500);
-    const { getData, loading, data, setState } = useFetchData();
+    const { getData, data, setState } = useFetchData();
 
     useEffect(() => {
         if (debouncedSearch) {
@@ -35,21 +46,20 @@ export const SearchBar = ({ width }) => {
     }, [debouncedSearch, getData, setState]);
 
     return (
-        <StyleAutoComplete
+        <StyledAutoComplete
             freeSolo
             disableClearable
             width={width}
-            loading={loading}
-            loadingText={<Loading size={50} />}
             options={data?.products || []}
             getOptionLabel={(option) => option.name}
-            renderOption={(_, option) => (
+            renderOption={(props, option) => (
                 <Link to={`/products/categories/${option.category}/${option._id}`}>
-                    <Stack direction="row" mt={2} alignItems="center">
+                    <Stack direction="row" alignItems="center" spacing={2} paddingY={1}>
                         <StyledImage src={option.image} alt={`${option.category}-${option.name}`} />
                         <Text>{option.name}</Text>
-                        <Text sx={{ marginLeft: 10 }}>{option.price}</Text>
+                        <Text sx={{ marginLeft: 'auto', fontWeight: 'bold' }}>${option.price}</Text>
                     </Stack>
+                    <Divider />
                 </Link>
             )}
             renderInput={(params) => (
@@ -62,14 +72,29 @@ export const SearchBar = ({ width }) => {
                         ...params.InputProps,
                         startAdornment: (
                             <InputAdornment position="start">
-                                <BsSearch color="red" size={20} style={{ marginLeft: 10 }} />
+                                <BsSearch color="#dc2f2f" size={20} style={{ marginLeft: 10 }} />
                             </InputAdornment>
                         ),
                     }}
-                    sx={{ input: { color: "#ffffff" } }} // Changed color to white (#ffffff)
-                    inputLabelProps={{ style: { color: "blue" } }} // Adjusted style for input label
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+                            input: { color: "black", minWidth: 0 },
+                            "&.Mui-focused input": { color: "black" },
+                        },
+                        "& .MuiInputLabel-root": {
+                            color: "blue",
+                        },
+                        "& .Mui-focused .MuiInputLabel-root": {
+                            color: "white",
+                        },
+                        "& .MuiInputBase-input": {
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                        },
+                    }}
                 />
             )}
         />
     );
 };
+

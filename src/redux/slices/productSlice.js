@@ -23,33 +23,34 @@ export const fetchHomePageProducts = createAsyncThunk(
       const { data } = await axiosInstance.get('/products');
       return data;
     } catch (error) {
-      return rejectWithValue('Error fetching products');
+      return rejectWithValue('Error fetching home page products');
     }
   }
 );
 
-export const deleteProduct = createAsyncThunk("product/deleteProduct", async ({ id }, { rejectWithValue, dispatch }) => {
-  try {
-    await axiosInstance.delete(`/products/${id}`);
-    dispatch(fetchHomePageProducts());
-  } catch (error) {
-    return rejectWithValue('Error fetching products');
+export const deleteProduct = createAsyncThunk(
+  "product/deleteProduct",
+  async ({ id }, { rejectWithValue, dispatch }) => {
+    try {
+      await axiosInstance.delete(`/products/${id}`);
+      dispatch(fetchHomePageProducts());
+    } catch (error) {
+      return rejectWithValue('Error deleting product');
+    }
   }
-})
-
+);
 
 export const fetchCategoryProducts = createAsyncThunk(
   "product/fetchCategoryProducts",
   async ({ category, queryUrl }, { rejectWithValue }) => {
     try {
       const { data } = await axiosInstance.get(`/products/categories/${category}${queryUrl}`);
-      return data;
+      return data; 
     } catch (error) {
       return rejectWithValue("Error fetching category products");
     }
   }
 );
-
 
 const productSlice = createSlice({
   name: "product",
@@ -65,7 +66,6 @@ const productSlice = createSlice({
   reducers: {
     setSelectProduct: (state, action) => {
       state.selectedProduct = action.payload;
-
     },
   },
   extraReducers: (builder) => {
@@ -86,14 +86,12 @@ const productSlice = createSlice({
     builder
       .addCase(fetchHomePageProducts.pending, (state) => {
         state.loading = true;
-        // state.error = null;
+        state.error = null;
       })
       .addCase(fetchHomePageProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.homePageProducts = action.payload.products;
-        state.categories = action.payload.categories;
-        // state.productCategories = action.payload.categories; //not needed?
-        // state.error = null;
+        state.homePageProducts = action.payload.products; 
+        state.categories = action.payload.categories; 
       })
       .addCase(fetchHomePageProducts.rejected, (state, action) => {
         state.loading = false;
@@ -103,25 +101,21 @@ const productSlice = createSlice({
     builder
       .addCase(fetchCategoryProducts.pending, (state) => {
         state.loading = true;
-        // state.error = null;
+        state.error = null;
       })
       .addCase(fetchCategoryProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.categoryProducts = action.payload.products;
-        state.totalPages = action.payload.totalPages;
-        // state.error = null;
+        state.totalPages = action.payload.totalPages; 
       })
       .addCase(fetchCategoryProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
 
-
   },
 });
 
 export const productReducer = productSlice.reducer;
 export const { setSelectProduct } = productSlice.actions;
-
-
 

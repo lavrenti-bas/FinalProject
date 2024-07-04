@@ -6,6 +6,8 @@ const StyledLoadingContainer = styled(Box)(() => ({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
+    minHeight: "100vh",
+    padding: "30px",
 }));
 
 export const Loading = ({ size = 100, color = "success" }) => {
@@ -22,3 +24,4 @@ export const LoadingWrapper = ({ isLoading, children }) => {
     }
     return children;
 };
+

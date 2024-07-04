@@ -6,7 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { signupValidationSchema } from "./SignupFormValidation";
 import { Input, Button } from "../../../components/atoms";
 import { authenticateUser } from "../../../redux/slices";
-import { StyledFormContainer } from "../../../components/atoms/FormAndSignupStyles";
+import { styled } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+const StyledFormContainer = styled('div')({
+    display: "flex",
+    flexDirection: "column",
+    gap: "5px",
+    width: "100%",
+});
 
 export const SignupForm = () => {
     const {
@@ -20,6 +28,7 @@ export const SignupForm = () => {
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const onSignup = (data) => {
         dispatch(authenticateUser({ formValues: data }))
@@ -43,7 +52,7 @@ export const SignupForm = () => {
                 render={({ field }) => (
                     <Input
                         {...field}
-                        label="First Name"
+                        label={t("first_name")}
                         error={Boolean(errors.firstName)}
                         helperText={errors.firstName?.message}
                     />
@@ -56,7 +65,7 @@ export const SignupForm = () => {
                 render={({ field }) => (
                     <Input
                         {...field}
-                        label="Last Name"
+                        label={t("last_name")}
                         error={Boolean(errors.lastName)}
                         helperText={errors.lastName?.message}
                     />
@@ -69,7 +78,7 @@ export const SignupForm = () => {
                 render={({ field }) => (
                     <Input
                         {...field}
-                        label="Email"
+                        label={t("email")}
                         error={Boolean(errors.email)}
                         helperText={errors.email?.message}
                     />
@@ -83,7 +92,7 @@ export const SignupForm = () => {
                     <Input
                         {...field}
                         type="password"
-                        label="Password"
+                        label={t("password")}
                         error={Boolean(errors.password)}
                         helperText={errors.password?.message}
                     />
@@ -93,7 +102,7 @@ export const SignupForm = () => {
                 onClick={handleSubmit(onSignup)}
                 sx={{ mt: 3 }}
             >
-                Sign up
+                {t("sign_up")}
             </Button>
         </StyledFormContainer>
     );

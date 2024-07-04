@@ -1,23 +1,36 @@
 import React from "react";
-import { StyledContainer, StyledStack } from "./FormAndSignupStyles";
-// import { Link } from "./Link";
-// import LogoImage from "../../assets/images/Logo.png";
-// import { Stack } from "@mui/material";
+import styled from "@emotion/styled";
+
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height: 100%;
+`;
+
+const BoxContainer = styled.div`
+  width: 100%;
+  max-width: 400px; /* Adjust max-width as needed */
+  background-color: #ffffff;
+  padding: 40px; /* Adjust padding as needed */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+`;
+
+const StackContainer = styled.div`
+  width: 100%;
+  max-width: 400px;
+`;
 
 export const FormContainer = ({ children }) => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', position: 'relative' }}>
-
-            <StyledContainer>
-                <StyledStack>{children}</StyledStack>
-            </StyledContainer>
-        </div>
+        <StyledContainer>
+            <BoxContainer>
+                <StackContainer>{children}</StackContainer>
+            </BoxContainer>
+        </StyledContainer>
     );
 };
 
-// {/* <Stack>
-// <Link>
-//     <img src={LogoImage} width={250} height={250} alt="logo" />
-// </Link>
-// </Stack> */}
-// //may add image 
+export default FormContainer;

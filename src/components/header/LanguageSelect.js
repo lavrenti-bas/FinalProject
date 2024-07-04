@@ -12,23 +12,43 @@ const LanguageSelect = () => {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    console.log(langCode)
     i18n.changeLanguage(langCode);
-  }, [i18n, langCode])
+  }, [i18n, langCode]);
 
   return (
-    <FormControl>
-      <Select sx={{ color: "#FF9900", border: "2px solid blue" }} value={langCode} defaultValue={langCode} onChange={(e) => {
-        setLangCode(e.target.value)
-      }}>
-        {Object.entries(languageCodes).map((item) => {
-          const [languageKey, languageValue] = item;
-          return (
-            <MenuItem key={languageKey} value={languageKey}>
-              {languageValue}
-            </MenuItem>
-          );
-        })}
+    <FormControl sx={{ minWidth: 80 }}>
+      <Select
+        sx={{
+          color: "#fff",
+          border: "none", // Remove border
+          backgroundColor: "#dc2f2f", // Set background color
+          height: "30px",
+          fontSize: "0.875rem",
+          "& .MuiSelect-select": {
+            padding: "5px 10px",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "transparent", // Ensure no border for outlined style
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "transparent", // Border color on hover
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "transparent", // Border color when focused
+          },
+        }}
+        value={langCode}
+        defaultValue={langCode}
+        onChange={(e) => {
+          setLangCode(e.target.value);
+          localStorage.setItem("langCode", e.target.value);
+        }}
+      >
+        {Object.entries(languageCodes).map(([languageKey, languageValue]) => (
+          <MenuItem key={languageKey} value={languageKey}>
+            {languageValue}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

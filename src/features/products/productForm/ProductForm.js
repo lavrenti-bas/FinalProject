@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productFormValidationSchema } from "./productFormValidation";
-import { FormContainer, Text, Input } from "../../../components/atoms";
+import { FormContainer, Text, Input, Snackbar } from "../../../components/atoms";
 import { useTranslation } from "react-i18next";
 import FileBase64 from "react-file-base64";
 import { useDispatch } from "react-redux";
-import { saveProduct, setSelectProduct } from "../../../redux/slices";
+import { saveProduct, setSelectProduct, clearError } from "../../../redux/slices";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../../../hooks";
-
+import { Stack, Box, Typography, Button } from "@mui/material";
+import { FaImage } from "react-icons/fa";
 
 export const ProductForm = () => {
     const { t } = useTranslation();
+    const [fileName, setFileName] = useState("Choose Image");
 
     const {
         control,
@@ -24,16 +26,20 @@ export const ProductForm = () => {
         mode: "onChange",
     });
 
-    const { selectedProduct } = useProduct();
+    const { selectedProduct, error } = useProduct();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const fileInputRef = useRef(null);
 
     const onSubmit = (data) => {
-        dispatch(saveProduct({ product: data, productId: selectedProduct?._id })).unwrap().then(() => {
-            navigate("/");
-        }).catch((err) => {
-            console.log(data)
-        })
+        dispatch(saveProduct({ product: data, productId: selectedProduct?._id }))
+            .unwrap()
+            .then(() => {
+                navigate("/");
+            })
+            .catch((err) => {
+                console.log(data);
+            });
         console.log(data);
     };
 
@@ -51,102 +57,148 @@ export const ProductForm = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(setSelectProduct(null))
-        }
+            dispatch(setSelectProduct(null));
+        };
     }, [dispatch]);
+
+    const handleCustomFileButtonClick = () => {
+        fileInputRef.current.querySelector("input[type='file']").click();
+    };
+
+    const handleFileDone = ({ base64, file }) => {
+        setValue("image", base64);
+        setFileName(file.name);
+    };
 
     return (
         <FormContainer>
-            <Text>{t("save_product")}</Text>
-            <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-
-                    <Input
-                        name={field.name}
-                        value={field.value}
-                        onChange={field.onChange}
-                        helperText={errors.name?.message}
-                        error={Boolean(errors.name)}
-                        label="product_name" // Assuming "product_name" is a translation key
-                    // label={t("product_name")} // Assuming "product_name" is a translation key
+            <Stack spacing={2} alignContent="flex-start">
+                <Text
+                    variant="h5"
+                    sx={{ fontSize: 24, fontWeight: 'bold', color: 'black', mb: 2, textAlign: 'center' }}
+                >
+                    {t("save_product")}
+                </Text>
+                <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            name={field.name}
+                            value={field.value}
+                            onChange={field.onChange}
+                            helperText={errors.name?.message}
+                            error={Boolean(errors.name)}
+                            label={t("product_name")}
+                        />
+                    )}
+                />
+                <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            name={field.name}
+                            value={field.value}
+                            onChange={field.onChange}
+                            helperText={errors.description?.message}
+                            error={Boolean(errors.description)}
+                            label={t("product_description")}
+                        />
+                    )}
+                />
+                <Controller
+                    name="brand"
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            name={field.name}
+                            value={field.value}
+                            onChange={field.onChange}
+                            helperText={errors.brand?.message}
+                            error={Boolean(errors.brand)}
+                            label={t("product_brand")}
+                        />
+                    )}
+                />
+                <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            name={field.name}
+                            value={field.value}
+                            onChange={field.onChange}
+                            helperText={errors.category?.message}
+                            error={Boolean(errors.category)}
+                            label={t("product_category")}
+                        />
+                    )}
+                />
+                <Controller
+                    name="price"
+                    control={control}
+                    render={({ field }) => (
+                        <Input
+                            type="number"
+                            name={field.name}
+                            value={field.value}
+                            onChange={field.onChange}
+                            helperText={errors.price?.message}
+                            error={Boolean(errors.price)}
+                            label={t("product_price")}
+                        />
+                    )}
+                />
+                <Box ref={fileInputRef} sx={{ display: 'none' }}>
+                    <FileBase64
+                        type="file"
+                        multiple={false}
+                        onDone={handleFileDone}
                     />
-                )}
-            />
-            <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        name={field.name}
-                        value={field.value}
-                        onChange={field.onChange}
-                        helperText={errors.description?.message}
-                        error={Boolean(errors.description)}
-                        label="product_description" // Assuming "product_name" is a translation key
-                    // label={t("product_description")} // Assuming "product_name" is a translation key
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <FaImage
+                        size={35}
+                        color="primary"
+                        onClick={handleCustomFileButtonClick}
+                        style={{ cursor: 'pointer' }}
                     />
-                )}
+                    {fileName && (
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                ml: 2,
+                                fontWeight: "bold",
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '200px',
+                            }}
+                        >
+                            {fileName}
+                        </Typography>
+                    )}
+                </Box>
+                <Button
+                    type="submit"
+                    onClick={handleSubmit(onSubmit)}
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                >
+                    {t("submit")}
+                </Button>
+            </Stack>
+            <Snackbar
+                message={error}
+                severity="error"
+                onClose={() => { dispatch(clearError()) }}
             />
-            <Controller
-                name="brand"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        name={field.name}
-                        value={field.value}
-                        onChange={field.onChange}
-                        helperText={errors.brand?.message}
-                        error={Boolean(errors.brand)}
-                        label="product_brand" // Assuming "product_name" is a translation key
-                    // label={t("product_brand")} // Assuming "product_name" is a translation key
-                    />
-                )}
-            />
-            <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        name={field.name}
-                        value={field.value}
-                        onChange={field.onChange}
-                        helperText={errors.category?.message}
-                        error={Boolean(errors.category)}
-                        label="product_category"// Assuming "product_name" is a translation key
-                    // label={t("product_category")} // Assuming "product_name" is a translation key
-                    />
-                )}
-            />
-            <Controller
-                name="price"
-                control={control}
-                render={({ field }) => (
-                    <Input
-                        type="number"
-                        name={field.name}
-                        value={field.value}
-                        onChange={field.onChange}
-                        helperText={errors.price?.message}
-                        error={Boolean(errors.price)}
-                        label="product_price" // Assuming "product_price" is a translation key
-                    // label={t("product_price")} // Assuming "product_price" is a translation key
-                    />
-                )}
-            />
-            <FileBase64
-                type="file"
-                multiple={false}
-                onDone={({ base64 }) => {
-                    setValue("image", base64);
-                }}
-            />
-            <button type="submit" onClick={handleSubmit(onSubmit)}>
-                submit
-            </button>
         </FormContainer>
     );
 };
 
 export default ProductForm;
+
+

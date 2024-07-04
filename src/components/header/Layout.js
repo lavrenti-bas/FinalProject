@@ -1,22 +1,27 @@
-import React from "react";
-import { Grid } from "@mui/material";
+import React from 'react';
+import { Grid } from '@mui/material';
 import { Header } from "./Header";
 import { Outlet } from "react-router-dom";
 
 export const Layout = () => {
     return (
-        <Grid container sx={{ minHeight: "100vh" }}>
-            <Grid item>
+        <Grid container direction="column" sx={{ minHeight: "100vh" }}>
+            <Grid item xs={12}>
                 <Header />
             </Grid>
             <Grid
                 item
+                xs={12}
                 sx={{
-                    paddingTop: 20,
-                    minHeight: "100%",
-                    width: "100%",
-                    pb: 10,
-                    backgroundColor: "#f5f5f5",
+                    minHeight: "calc(100vh - 70px)",
+                    boxShadow: "0px 0px 10px rgba(5, 2, 5, 0.5)",
+                    paddingTop: { xs: 3, sm: 4 },
+                    marginTop: { xs: 1, sm: 2 },
+                    flexGrow: 1,
+                    backgroundColor: "#a7cd78",
+                    paddingBottom: 0,
+                    paddingLeft: { xs: 1, sm: 3, md: 5 },
+                    paddingRight: { xs: 1, sm: 3, md: 5 }
                 }}
             >
                 <Outlet />
@@ -24,4 +29,3 @@ export const Layout = () => {
         </Grid>
     );
 };
-

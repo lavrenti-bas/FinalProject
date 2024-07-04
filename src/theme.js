@@ -3,16 +3,19 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#1976d2", // Primary color
+            main: '#a7cd78',
         },
         secondary: {
-            main: "#dc004e", // Secondary color
+            main: "#dc2f2f",
+            secondary: "black",
+            third: "#42b883",
         },
+
     },
     typography: {
-        fontFamily: "Roboto, sans-serif", // Default font family
+        fontFamily: "Roboto, sans-serif",
     },
-    spacing: 8, // Default spacing unit
+    spacing: 8, 
     breakpoints: {
         values: {
             xs: 0,
@@ -22,7 +25,7 @@ const theme = createTheme({
             xl: 1920,
         },
     },
-    // Other theme configurations...
+   
 });
 
 export { theme };

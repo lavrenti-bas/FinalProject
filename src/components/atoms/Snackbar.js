@@ -25,4 +25,3 @@ export const Snackbar = ({
     );
 };
 
-//add snackbar to product errors

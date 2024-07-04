@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Box, IconButton, Menu, MenuItem, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Button, Link } from "../atoms";
+import { Link } from "../atoms";
 import { useUser } from "../../hooks";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices";
@@ -59,17 +59,24 @@ export const UserIcon = () => {
                                 <Link to="/login">{t("login")}</Link>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
-                                <Link to="/signup">{t("sign up")}</Link>
+                                <Link to="/signup">{t("sign_up")}</Link>
                             </MenuItem>
                         </>
                     ) : (
-                        <MenuItem onClick={handleLogout}>
-                            <Button>{t("logout")}</Button>
+                        <MenuItem
+                            sx={{
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 0, 0, 0.5)', 
+                                },
+                            }}
+                            onClick={handleLogout}
+                        >
+                            Logout
                         </MenuItem>
                     )}
                     {isUserAdmin(userData) && (
                         <MenuItem onClick={handleClose}>
-                            <Link to="/products/add">{t("add product")}</Link>
+                            <Link to="/products/add">{t("add_product")}</Link>
                         </MenuItem>
                     )}
                 </Stack>

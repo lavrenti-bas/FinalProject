@@ -30,7 +30,6 @@ axiosInstance.interceptors.request.use(async (req) => {
       return req;
     } catch (error) {
       console.error("Error refreshing token:", error);
-      // Handle token refresh failure gracefully if needed
       return req;
     }
   });

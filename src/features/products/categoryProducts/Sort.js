@@ -4,7 +4,7 @@ import { MenuItem, Select, styled } from "@mui/material";
 const StyledSelect = styled(Select)(() => ({
     order: "none",
     backgroundColor: "#ffff",
-    boxShadow: "rgba(0, 0, 0, 0.5) 0px 2px 1px",
+    boxShadow: "rgba(1, 1, 1, 0.7) 0px 2px 1px",
     ".MuiOutlinedInput-notchedOutline": { border: "none" }
 }));
 
@@ -21,3 +21,4 @@ export const Sort = ({ value, changeSort }) => (
         <MenuItem value="name,asc">Sort by name: A to Z</MenuItem>
     </StyledSelect>
 );
+

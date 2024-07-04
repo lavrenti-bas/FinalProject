@@ -18,12 +18,12 @@ export const CategoryProductList = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchCategoryProducts({ category: categoryName, queryUrl: `?size=1&sort=${sort},asc&page=${page}` })); //update this
+        dispatch(fetchCategoryProducts({ category: categoryName, queryUrl: `?size=6&sort=${sort},asc&page=${page}` }));
     }, [categoryName, dispatch, page, sort]);
 
     return (
         <LoadingWrapper isLoading={loading}>
-            <Stack alignItems="center" justifyContent="space-between" height="100%">
+            <Stack alignItems="center" justifyContent="space-between" height="100%" spacing={2}>
                 <Sort value={sort} changeSort={changeSort} />
                 <GridContainer>
                     {categoryProducts.map((product) => (

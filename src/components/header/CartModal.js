@@ -4,6 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { FaTrashCan } from "react-icons/fa6";
 import { addToCart, removeFromCart, removeProductFromCart } from "../../redux/slices/cartSlice";
+import { useTranslation } from "react-i18next";
 
 const containerStyles = {
     position: "absolute",
@@ -11,6 +12,8 @@ const containerStyles = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 450,
+    maxHeight: '80vh',
+    overflowY: 'auto',
     bgcolor: "background.paper",
     border: "2px solid #000",
     borderRadius: 5,
@@ -31,7 +34,9 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export const CartModal = ({ open, setOpen, cartItems, totalQuantity }) => {
+
     const handleClose = () => setOpen(false);
+    const { t } = useTranslation();
     const totalSum = cartItems.reduce((acc, curr) => acc + curr.product.price * curr.quantity, 0)
 
     return (
@@ -48,8 +53,8 @@ export const CartModal = ({ open, setOpen, cartItems, totalQuantity }) => {
                             <IoMdClose />
                         </IconButton>
                     </Box>
-                    <Typography variant="h6" component="h2">Cart Items</Typography>
-                    <Typography variant="subtitle1">Total Quantity: {totalQuantity}</Typography>
+                    <Typography variant="h6" component="h2"> {t("cart_items")}</Typography>
+                    <Typography variant="subtitle1"> {t("total_quantity")}: {totalQuantity}</Typography>
                     <Divider sx={{ mt: 1, mb: 2 }} />
                     {cartItems.length > 0 ? (
                         cartItems.map((item) => (
@@ -62,22 +67,23 @@ export const CartModal = ({ open, setOpen, cartItems, totalQuantity }) => {
                             </div>
                         ))
                     ) : (
-                        <Typography variant="body1">No items in cart.</Typography>
+                        <Typography variant="body1"> {t("no_items_in_cart")}.</Typography>
                     )}
-                    <Stack direction="row" justifyContent="space-between">
-                        <Typography fontWeight="bold">Total</Typography>
-                        <Typography fontWeight="bold">${totalSum}</Typography>
+                    <Stack direction="row" gap="2px">
+                        <Typography fontSize="2rem" fontWeight="bold"> {t("total")}:</Typography>
+                        <Typography fontSize="2rem" color="#42b883" fontWeight="bold">${totalSum}</Typography>
 
                     </Stack>
                 </Box>
-            </Modal>
-        </div>
+            </Modal >
+        </div >
     );
 };
 
 const CartItem = ({ product, quantity }) => {
     const { _id, name, price, image } = product;
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     return (
         <Box>
@@ -90,7 +96,7 @@ const CartItem = ({ product, quantity }) => {
                 <Stack spacing={2} width="100%" paddingX={1.5}>
                     <Stack direction="row" justifyContent="space-between">
                         <Typography fontWeight="400">{name}</Typography>
-                        <Typography fontWeight="400" sx={{ marginRight: 1 }}>
+                        <Typography fontWeight="400" sx={{ marginRight: 1, color: "#42b883", }}>
                             ${price.toFixed(2)}
                         </Typography>
                     </Stack>
@@ -108,7 +114,7 @@ const CartItem = ({ product, quantity }) => {
                         </StyledButton>
                     </Stack>
                     <Stack direction="row" alignItems="center" justifyContent="space-between">
-                        <Chip label="in stock" color="primary" sx={{ borderRadius: 4, width: 70, height: 30 }} />
+                        <Chip label={t("in_stock")} color="primary" sx={{ borderRadius: 4, minWidth: 70, height: 30 }} />
                         <Stack direction="row" alignItems="center" onClick={() => dispatch(removeProductFromCart(_id))}
                             sx={{
                                 cursor: 'pointer',
@@ -117,7 +123,7 @@ const CartItem = ({ product, quantity }) => {
                                     borderRadius: '5px',
                                 },
                             }}>
-                            <Typography>Remove</Typography>
+                            <Typography> {t("remove")}</Typography>
                             <FaTrashCan size={20} />
                         </Stack>
                     </Stack>
@@ -126,3 +132,4 @@ const CartItem = ({ product, quantity }) => {
         </Box>
     );
 };
+

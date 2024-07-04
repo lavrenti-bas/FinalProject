@@ -5,8 +5,17 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginValidationSchema } from "./LoginFormValidation";
 import { Input, Button } from "../../../components/atoms";
-import { StyledFormContainer } from "../../../components/atoms/FormAndSignupStyles";
 import { authenticateUser } from "../../../redux/slices";
+import { styled } from "@mui/material";
+import { useTranslation } from "react-i18next";
+
+const StyledFormContainer = styled('div')({
+    display: "flex",
+    flexDirection: "column",
+    gap: "5px",
+    width: "100%",
+});
+
 
 export const LoginForm = () => {
     const {
@@ -17,7 +26,7 @@ export const LoginForm = () => {
         mode: "onChange",
         resolver: yupResolver(LoginValidationSchema),
     });
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -43,7 +52,7 @@ export const LoginForm = () => {
                 render={({ field }) => (
                     <Input
                         {...field}
-                        label="Email"
+                        label= {t("email")}
                         error={Boolean(errors.email)}
                         helperText={errors.email?.message}
                     />
@@ -57,7 +66,7 @@ export const LoginForm = () => {
                     <Input
                         {...field}
                         type="password"
-                        label="Password"
+                        label= {t("password")}
                         error={Boolean(errors.password)}
                         helperText={errors.password?.message}
                     />
